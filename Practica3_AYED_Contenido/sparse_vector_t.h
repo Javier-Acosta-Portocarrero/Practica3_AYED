@@ -69,14 +69,12 @@ sparse_vector_t::sparse_vector_t(const int n) : pv_(n), nz_(0), n_(n) {}
 // FASE II
 sparse_vector_t::sparse_vector_t(const vector_t<double>& v, const double eps)
     : pv_(), nz_(0), n_(0) {
-  int contador_escaso{0};
   pv_.resize(v.get_size());
   for (int i{0}; i < v.get_size(); ++i) {
-    if (v[i] >= eps || v[i] <= -eps) {
+    if (fabs(v[i]) >= eps) {
       ++nz_;
       pair_double_t temp{v[i], i};
-      at(contador_escaso) = temp;
-      ++contador_escaso;
+      at(nz_ - 1) = temp;
     } 
     ++n_;
   }

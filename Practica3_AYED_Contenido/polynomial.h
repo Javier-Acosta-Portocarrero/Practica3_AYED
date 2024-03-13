@@ -98,14 +98,14 @@ bool Polynomial::IsEqual(const Polynomial& pol, const double eps) const {
   } else if (get_size() < pol.get_size()) {
     menor_tamano = get_size();
     for (int j{menor_tamano}; j < pol.get_size(); ++j) {
-      if (pol[j] != 0) {
+      if (fabs(pol[j]) >= eps) {
         differents = true;
       }
     }
   } else {
     menor_tamano = pol.get_size();
     for (int j{menor_tamano}; j < get_size(); ++j) {
-      if (at(j) != 0) {
+      if (fabs(at(j)) >= eps) {
         differents = true;
       }
     }
@@ -185,6 +185,11 @@ bool SparsePolynomial::IsEqual(const Polynomial& pol, const double eps) const {
       differents = true;
     }
   }
+  // El if de abajo sirve para comprobar que el vector denso no 
+  // tiene valores no nulos en posiciones distintas al disperso.
+  if (Eval(2) != pol.Eval(2)) {
+    differents = true;
+  } 
   // poner el código aquí
   return !differents;
 }
